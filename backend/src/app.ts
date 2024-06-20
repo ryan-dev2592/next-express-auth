@@ -8,6 +8,8 @@ import cors from "cors";
 import createHttpError from "http-errors";
 import errorHandler from "@/middlewares/errorHandler";
 
+import routes from "@/routes";
+
 const app = express();
 
 if (process.env.NODE_ENV === "development") {
@@ -23,6 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use("/api", routes);
 
 // Not Found Route
 app.use(async (req: Request, res: Response, next: NextFunction) => {
