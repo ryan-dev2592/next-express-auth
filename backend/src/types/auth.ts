@@ -5,7 +5,13 @@ export interface RegisterRequest extends Request {
     firstName?: string;
     lastName?: string;
     email: string;
-    username: string;
+    password: string;
+  };
+}
+
+export interface LoginRequest extends Request {
+  body: {
+    email: string;
     password: string;
   };
 }

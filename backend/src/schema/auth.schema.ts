@@ -4,12 +4,6 @@ import * as zod from "zod";
 export const registerUserSchema = zod.object({
   body: zod
     .object({
-      username: zod
-        .string()
-        .trim()
-        .min(3, "Please provide a username with at least 3 characters")
-        .max(20, "Please provide a username with at most 20 characters"),
-
       email: zod.string().email("Please provide a valid email address"),
 
       password: zod
@@ -28,4 +22,11 @@ export const registerUserSchema = zod.object({
       message: "Passwords do not match",
       path: ["passwordConfirm"],
     }),
+});
+
+export const loginUserSchema = zod.object({
+  body: zod.object({
+    email: zod.string().trim().email("Please provide a valid email address"),
+    password: zod.string().trim().min(1, "Password cannot be empty"),
+  }),
 });

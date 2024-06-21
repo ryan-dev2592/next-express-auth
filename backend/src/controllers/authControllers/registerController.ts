@@ -7,10 +7,10 @@ import User from "@/models/userModel";
 const registerController: RequestHandler = expressAsyncHandler(
   async (req: RegisterRequest, res: Response, next: NextFunction) => {
     try {
-      const { firstName, lastName, email, username, password } = req.body;
+      const { firstName, lastName, email, password } = req.body;
 
       // Check if all mandatory fields are provided
-      if (!email || !username || !password) {
+      if (!email || !password) {
         throw new createHttpError.BadRequest(
           "Please fill in all the required fields"
         );
@@ -18,7 +18,7 @@ const registerController: RequestHandler = expressAsyncHandler(
 
       // Check if the user already exists
       const userExists = await User.findOne({
-        $or: [{ email }, { username }],
+        email: email.toLowerCase(),
       });
 
       if (userExists) {
@@ -31,8 +31,7 @@ const registerController: RequestHandler = expressAsyncHandler(
       const user = await User.create({
         firstName,
         lastName,
-        email,
-        username,
+        email: email.toLowerCase(),
         password,
       });
 

@@ -8,7 +8,6 @@ export enum UserRole {
 
 export interface IUser {
   email: string;
-  username: string;
   password: string;
   isEmailVerified: boolean;
   isAccountActive: boolean;
@@ -33,7 +32,6 @@ const UserSchema = new mongoose.Schema<IUserDocument>(
     password: { type: String, required: true },
     firstName: { type: String },
     lastName: { type: String },
-    username: { type: String, required: true, unique: true, trim: true },
 
     isAccountActive: { type: Boolean, default: false },
     isEmailVerified: { type: Boolean, default: false },
@@ -72,10 +70,11 @@ UserSchema.methods.comparePassword = async function (
 // Only send the necessary fields to the client
 UserSchema.methods.toJSON = function () {
   let user = this.toObject();
+  user.id = user._id;
+  delete user._id;
   delete user.__v;
   delete user.password;
   delete user.refreshTokens;
-  user.id = user._id;
   return user;
 };
 
