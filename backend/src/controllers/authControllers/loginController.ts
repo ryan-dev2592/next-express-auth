@@ -3,7 +3,7 @@ import expressAsyncHandler from "express-async-handler";
 import { LoginRequest } from "@/types/auth";
 import createHttpError from "http-errors";
 import { generateTokens } from "@/services/token.service";
-import { checkUserCredentials } from "@/services/user.service";
+import { checkUserCredentials } from "@/services/auth.service";
 
 const loginController: RequestHandler = expressAsyncHandler(
   async (req: LoginRequest, res: Response, next: NextFunction) => {

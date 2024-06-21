@@ -1,18 +1,29 @@
 import User, { IUserDocument } from "@/models/userModel";
 
-// Check User Credentials
-export const checkUserCredentials = async (email: string, password: string) => {
-  const user = await User.findOne({ email });
+// Find User By Id
+export const findUserById = async (id: string) => {
+  const user = await User.findById(id);
 
   if (!user) {
     return null;
   }
 
-  const isMatch = await user.comparePassword(password);
+  return user;
+};
 
-  if (!isMatch) {
+// Find User By Email
+
+// Find User By Refresh Token
+export const findUserByRefreshToken = async (refreshToken: string) => {
+  console.log("Refresh Token", refreshToken);
+
+  const user = await User.findOne({ refreshTokens: refreshToken });
+
+  console.log("User Found: ", user);
+
+  if (!user) {
     return null;
   }
 
-  return user as IUserDocument;
+  return user;
 };
