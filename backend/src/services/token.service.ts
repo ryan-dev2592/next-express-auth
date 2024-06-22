@@ -1,6 +1,6 @@
 import jwt, { CustomJWTPayload } from "jsonwebtoken";
 
-import User, { IUserDocument } from "@/models/userModel";
+import { IUserDocument } from "@/models/userModel";
 import {
   ACCESS_JWT_SECRET,
   ACCESS_TOKEN_EXPIRY,

@@ -1,6 +1,4 @@
-import User, { IUserDocument } from "@/models/userModel";
-
-// Create New User
+import UserModel, { IUserDocument } from "@/models/userModel";
 
 // Find by Id
 
@@ -13,7 +11,7 @@ import User, { IUserDocument } from "@/models/userModel";
 // Check User Credentials
 
 export const checkUserCredentials = async (email: string, password: string) => {
-  const user = await User.findOne({ email });
+  const user = await UserModel.findOne({ email });
 
   if (!user) {
     return null;

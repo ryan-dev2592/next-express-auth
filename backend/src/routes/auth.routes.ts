@@ -4,6 +4,7 @@ import {
   register,
   logout,
   refreshToken,
+  verifyEmail,
 } from "@/controllers/authControllers/authControllers";
 import schemaValidator from "@/middlewares/schemaValidator";
 import { registerUserSchema, loginUserSchema } from "@/schema/auth.schema";
@@ -16,5 +17,7 @@ router.post("/login", schemaValidator(loginUserSchema), login);
 router.post("/logout", isAuthenticated, logout);
 
 router.post("/refresh-token", refreshToken);
+
+router.post("/verify-email", verifyEmail);
 
 export default router;

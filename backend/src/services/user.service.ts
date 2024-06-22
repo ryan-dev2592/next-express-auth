@@ -1,8 +1,8 @@
-import User, { IUserDocument } from "@/models/userModel";
+import UserModel, { IUserDocument } from "@/models/userModel";
 
 // Find User By Id
 export const findUserById = async (id: string) => {
-  const user = await User.findById(id);
+  const user = await UserModel.findById(id);
 
   if (!user) {
     return null;
@@ -17,7 +17,7 @@ export const findUserById = async (id: string) => {
 export const findUserByRefreshToken = async (refreshToken: string) => {
   console.log("Refresh Token", refreshToken);
 
-  const user = await User.findOne({ refreshTokens: refreshToken });
+  const user = await UserModel.findOne({ refreshTokens: refreshToken });
 
   console.log("User Found: ", user);
 
@@ -26,4 +26,24 @@ export const findUserByRefreshToken = async (refreshToken: string) => {
   }
 
   return user;
+};
+
+// Create New User
+export const createNewUser = async (user: Partial<IUserDocument>) => {
+  const { email, password, firstName, lastName } = user;
+
+  console.log("User: ", user);
+
+  const newUser = await UserModel.create({
+    email: email!.toLowerCase(),
+    password,
+    firstName,
+    lastName,
+  });
+
+  if (!newUser) {
+    return null;
+  }
+
+  return newUser;
 };

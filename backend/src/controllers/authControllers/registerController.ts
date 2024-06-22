@@ -2,7 +2,11 @@ import { Response, RequestHandler, NextFunction } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { RegisterRequest } from "@/types/auth";
 import createHttpError from "http-errors";
-import User from "@/models/userModel";
+import UserModel from "@/models/userModel";
+import generateVerificationToken from "@/helpers/generateVericationToken";
+import { createNewUser } from "@/services/user.service";
+import EmailVerificationTokenModel from "@/models/emailVerificationTokenModel";
+import { sendVerificationEMail } from "@/utils/sendEmail";
 
 const registerController: RequestHandler = expressAsyncHandler(
   async (req: RegisterRequest, res: Response, next: NextFunction) => {
@@ -17,7 +21,7 @@ const registerController: RequestHandler = expressAsyncHandler(
       }
 
       // Check if the user already exists
-      const userExists = await User.findOne({
+      const userExists = await UserModel.findOne({
         email: email.toLowerCase(),
       });
 
@@ -28,16 +32,25 @@ const registerController: RequestHandler = expressAsyncHandler(
       }
 
       // Create a new user
-      const user = await User.create({
-        firstName,
-        lastName,
-        email: email.toLowerCase(),
-        password,
+      const user = await createNewUser(req.body);
+
+      if (!user) {
+        throw new createHttpError.InternalServerError(
+          "User could not be created"
+        );
+      }
+
+      // Email Token Generation
+      const emailToken = generateVerificationToken();
+
+      // Send Verification Email
+      await EmailVerificationTokenModel.create({
+        owner: user._id,
+        token: emailToken,
       });
 
       // Send Verification Email
-
-      // Token Generation
+      await sendVerificationEMail(user, emailToken);
 
       // Send the response
       res.status(201).json({
