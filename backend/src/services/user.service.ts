@@ -12,6 +12,15 @@ export const findUserById = async (id: string) => {
 };
 
 // Find User By Email
+export const findUserByEmail = async (email: string) => {
+  const user = await UserModel.findOne({ email: email.toLowerCase() });
+
+  if (!user) {
+    return null;
+  }
+
+  return user;
+};
 
 // Find User By Refresh Token
 export const findUserByRefreshToken = async (refreshToken: string) => {
